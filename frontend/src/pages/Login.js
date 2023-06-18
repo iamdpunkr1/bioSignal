@@ -15,12 +15,12 @@ const Login = () => {
   }
     return (
       <div className='container'>
-      <div className='row'>
+      <div className='row '>
          <div className='col-8'>
-           <img className='img-fluid pb-5' src={dashpic} alt="dashboardmage"/>
+           <img className='img-fluid pb-5 min-vh-100' src={dashpic} alt="dashboardmage"/>
          </div>
-         <div className="form-box col-4">
-      <form className="center-wrap" onSubmit={handleSubmit}>
+         <div className="form-box  min-vh-100  col-4">
+   ``   <form className="center-wrap " onSubmit={handleSubmit}>
               <div className="section text-center">
               <h4 className="mb-4 pb-3">Log In</h4>
               

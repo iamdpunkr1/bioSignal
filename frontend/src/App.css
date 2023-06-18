@@ -30,8 +30,8 @@
 
 .form-box{
   width: 380px;
-  height: 700px;
-  margin-top: 20px !important;
+  height: 650px;
+  margin-top: 10px !important;
   position: relative;
   
   background-color: rgb(254, 206, 47);
@@ -167,6 +167,18 @@
   background-color: black !important;
   color: #c4c3ca !important;
   box-shadow: 0 8px 24px 0 rgba(255,235,167,.2);
+}
+
+.tabBtn{
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  -webkit-transition : all 200ms linear;
+  transition: all 200ms linear;
+  padding: 15px 0;
+  text-align: center;
+  border: none;
+  cursor:pointer;
 }
 /* .btn:active,
 .btn:focus{  
