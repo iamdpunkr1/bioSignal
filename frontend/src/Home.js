@@ -3,6 +3,8 @@ import { useAuthContext } from './hooks/useAuthContext';
 import NavBar from './partials/NavBar';
 import { useState, useEffect } from 'react';
 import {Modal, Button} from 'react-bootstrap'
+import Uploader from './partials/Uploader';
+
 const Home = () => {
     
     const {user} = useAuthContext()
@@ -95,8 +97,8 @@ const Home = () => {
         </tbody>
       </Table>
       </div>
+
       <Modal show={show} onHide={handleClose}>
-      <form onSubmit={handleSubmit}>
         <Modal.Header closeButton>
           <Modal.Title>User Name: {selectedUser && selectedUser.heartbeat}</Modal.Title>
         </Modal.Header>
@@ -110,25 +112,29 @@ const Home = () => {
                   </div>
                 </div>
                 {activeTab===0?
-                
+                 <form onSubmit={handleSubmit}>
                     <div className="form-group mt-3">
- <textarea
-              className="form-style2"
-                  id="disease"
-                  name="disease"
-                  rows={4}
-                  cols={50}
-                  value={
-                    feedback
-                  }
-                  onChange={(e)=>{setFeedback(e.target.value)}}
-                  placeholder='Type your feedback here.....'
-                  required
-                />
+                      <textarea
+                        className="form-style2"
+                          id="disease"
+                          name="disease"
+                          rows={4}
+                          cols={50}
+                          value={
+                            feedback
+                          }
+                          onChange={(e)=>{setFeedback(e.target.value)}}
+                          placeholder='Type your report here.....'
+                          required
+                        />
                 {/* <Unicons.UilHeadSideCough className="input-icon2 uil uil-at"  /> */}
                   </div>
+                </form>
                 :
-                <input className='text-body-primary py-1'  onChange={handlePDFChange}  type='file'  accept=".jpg,.jpeg,.png,.pdf"/>
+                <div className='d-flex justify-content-center mt-2'>
+                    <Uploader/>
+                </div>
+      
                 }
 
         </Modal.Body>
@@ -140,7 +146,6 @@ const Home = () => {
                 Save Changes
               </button>
         </Modal.Footer>
-    </form>
   </Modal>
   </div>
       </>
