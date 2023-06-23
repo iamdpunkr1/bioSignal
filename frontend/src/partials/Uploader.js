@@ -1,4 +1,3 @@
-
 import './uploader.css'
 import { MdCloudUpload, MdDelete } from 'react-icons/md'
 import {AiFillFileImage} from 'react-icons/ai'
@@ -14,7 +13,13 @@ const Uploader = ({fileName,setFileName,image,setImage}) => {
         onChange={({target: {files}})=>{
             files[0] && setFileName(files[0].name)
             if(files){
-                setImage(URL.createObjectURL(files[0]))
+                const file = files[0];
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onloadend = () => {
+                setImage(reader.result);
+                }
+                // setImage(URL.createObjectURL(files[0]))
             }
         }}
         />

@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 import {Modal, Button} from 'react-bootstrap'
 import Uploader from './partials/Uploader';
 import { BsFileEarmarkPlus} from 'react-icons/bs'
+// import { uploadReport } from '../../backend/controller/userDataController';
 
 const Home = () => {
     
@@ -13,8 +14,9 @@ const Home = () => {
     const [selectedImg,setSelectedImg] =useState(null)
     const [selectedUser,setSelectedUser] =useState(null)
     const [show, setShow] = useState(false)
+    const [error, setError] = useState(false)
     const [showImg, setShowImg] = useState(false)
-    const [feedImg,setFeedImg] = useState('')
+    // const [feedImg,setFeedImg] = useState('')
     const [activeTab, setActiveTab] = useState(0)
 
     const [image, setImage] =useState(null)
@@ -32,14 +34,7 @@ const Home = () => {
       setShow(true)
     };
 
-    const handlePDFChange = (event) => {
-      const file = event.target.files[0];
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onloadend = () => {
-        setFeedImg(reader.result);
-      };
-    };
+
     const [feedback, setFeedback] = useState('')
     useEffect(()=>{
       const fetchUserDatas = async () => {
@@ -63,8 +58,44 @@ const Home = () => {
         }
   },[user])
 
-  const handleSubmit=()=>{
-    console.log("Submit")
+
+  //upload Report
+  const uploadFn=async(report)=>{
+    const response = await fetch('/dashboard/'+selectedUser._id,{
+      method:'PATCH',
+      body:JSON.stringify({report}),
+      headers:{
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${user.token}`
+      }
+    })
+
+    const json = await response.json()
+    if(!response.ok){
+      console.log(json.error)
+      setError(json.error)
+    }
+    if(response.ok){
+      console.log("upload successful",json)
+    }
+  }
+
+  const handleSubmit=(e)=>{
+    e.preventDefault()
+    let report;
+    if( feedback || image){
+
+      if(activeTab===0){
+        report = feedback
+      }else{
+        report = image
+      }
+    }else{
+      return
+    }
+    
+    uploadFn(report)
+    console.log("Submit", image)
   }
 
     return ( <>
@@ -113,6 +144,7 @@ const Home = () => {
       </div>
 
       <Modal show={show} onHide={handleClose}>
+      <form onSubmit={handleSubmit}>
         <Modal.Header closeButton>
           <Modal.Title>Add Report: {selectedUser && selectedUser.uname}</Modal.Title>
         </Modal.Header>
@@ -126,7 +158,7 @@ const Home = () => {
                   </div>
                 </div>
                 {activeTab===0?
-                 <form onSubmit={handleSubmit}>
+
                     <div className="form-group mt-3">
                       <textarea
                         className="form-style2"
@@ -143,7 +175,7 @@ const Home = () => {
                         />
                 {/* <Unicons.UilHeadSideCough className="input-icon2 uil uil-at"  /> */}
                   </div>
-                </form>
+                
                 :
                 <div className='d-flex justify-content-center mt-2'>
                     <Uploader image={image} setImage={setImage}
@@ -152,27 +184,29 @@ const Home = () => {
       
                 }
 
-        </Modal.Body>
-        <Modal.Footer>
-              <Button variant="secondary" onClick={handleClose}>
-                Close
-              </Button>
-              <button type="submit" className='btn btn-primary' >
-                Save Changes
-              </button>
-        </Modal.Footer>
-  </Modal>
-
-  <Modal  size="xl" show={showImg} onHide={handleCloseImg}>
-        <Modal.Header closeButton>
-        </Modal.Header>
-        <Modal.Body> 
-          <div  className='d-flex justify-content-center mt-2'> 
-          <img src={selectedImg && selectedImg} alt="preview"  />
-          </div>
-        </Modal.Body>
-  </Modal>
-  </div>
+            </Modal.Body>
+            <Modal.Footer>
+                  <Button variant="secondary" onClick={handleClose}>
+                    Close
+                  </Button>
+                  <button type="submit" className='btn btn-primary' >
+                    Save Changes
+                  </button>
+            </Modal.Footer>
+            </form>
+      </Modal>
+      
+      {/* Preview Image */}
+      <Modal  size="xl" show={showImg} onHide={handleCloseImg}>
+            <Modal.Header closeButton>
+            </Modal.Header>
+            <Modal.Body> 
+              <div  className='d-flex justify-content-center mt-2'> 
+              <img src={selectedImg && selectedImg} alt="preview"  />
+              </div>
+            </Modal.Body>
+      </Modal>
+      </div>
       </>
 
      );

@@ -42,7 +42,9 @@ const getUserData = async(req, res) => {
 
 //add or upload report by admin || senDraft
 const uploadReport = async(req, res) => {
+  
   const {id }= req.params
+  
   try{
     const {report} = req.body
     const userData = await UserData.updateOne({_id:id},
@@ -57,14 +59,12 @@ const uploadReport = async(req, res) => {
  }
  
 
- 
-
 
  module.exports={
     createUserData,
     getUserData,
     getUserDatas,
-    uploadReport,
+    uploadReport
 }
 
 
