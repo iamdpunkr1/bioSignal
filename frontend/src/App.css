@@ -143,13 +143,13 @@
 .btn{  
   border-radius: 4px;
   height: 44px;
-  font-size: 13px;
+  font-size: 10px;
   font-weight: 600;
   text-transform: uppercase;
   -webkit-transition : all 200ms linear;
   transition: all 200ms linear;
-  padding: 0 30px;
-  letter-spacing: 1px;
+  padding: 0 20px !important;
+  letter-spacing: 0.5px;
   display: -webkit-inline-flex;
   display: -ms-inline-flexbox;
   display: inline-flex;
@@ -203,19 +203,6 @@ div.error {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 .file-input-wrapper {
   position: relative;
   overflow: hidden;
@@ -248,4 +235,31 @@ div.error {
 .file-input-wrapper button:focus {
   outline: none;
   box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.4);
+}
+
+.addreport{
+  cursor: pointer;
+}
+
+.navbar-brand{
+  font-weight: 600;
+}
+
+.logout{
+  border-radius: 4px;
+  font-size: 13px !important;
+  font-weight: 600;
+  text-transform: uppercase;
+  -webkit-transition : all 200ms linear;
+  transition: all 200ms linear;
+  padding: 10px 20px !important;
+  text-align: center;
+  border: none;
+  background-color: black !important;
+  color: #c4c3ca !important;
+  box-shadow: 0 8px 24px 0 rgba(255,235,167,.2);
+}
+
+.viewImg{
+  cursor: pointer;
 }

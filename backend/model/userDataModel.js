@@ -1,6 +1,10 @@
 const mongoose = require("mongoose");
 const  userDataSchema = new mongoose.Schema(
   {
+    uname:{
+      type: String,
+      required:true
+    },
     heartbeat: {
       type: String,
       required:true

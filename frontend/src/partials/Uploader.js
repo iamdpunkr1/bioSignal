@@ -1,10 +1,9 @@
-import React, { useState } from 'react'
+
 import './uploader.css'
 import { MdCloudUpload, MdDelete } from 'react-icons/md'
 import {AiFillFileImage} from 'react-icons/ai'
-const Uploader = () => {
-    const [image, setImage] =useState(null)
-    const [fileName, setFileName]= useState("No file selected")
+
+const Uploader = ({fileName,setFileName,image,setImage}) => {
 
   return (
     <main>

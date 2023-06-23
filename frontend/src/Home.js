@@ -4,17 +4,25 @@ import NavBar from './partials/NavBar';
 import { useState, useEffect } from 'react';
 import {Modal, Button} from 'react-bootstrap'
 import Uploader from './partials/Uploader';
+import { BsFileEarmarkPlus} from 'react-icons/bs'
 
 const Home = () => {
     
     const {user} = useAuthContext()
     const [userDatas, setUserDatas] = useState(null)
+    const [selectedImg,setSelectedImg] =useState(null)
     const [selectedUser,setSelectedUser] =useState(null)
     const [show, setShow] = useState(false)
+    const [showImg, setShowImg] = useState(false)
     const [feedImg,setFeedImg] = useState('')
     const [activeTab, setActiveTab] = useState(0)
+
+    const [image, setImage] =useState(null)
+    const [fileName, setFileName]= useState("No file selected")
+
+
     const handleClose = () => setShow(false);
-    
+    const handleCloseImg = () => setShowImg(false);
     const handleTabs = (n) =>{
       setActiveTab(n)
     }
@@ -69,11 +77,14 @@ const Home = () => {
       <Table striped bordered hover size="sm">
         <thead>
           <tr>
+            <th>Sl</th>
+            <th>Name</th>
             <th>Heart Beat</th>
             <th>Pulse rate</th>
             <th>Oxygen</th>
             <th>Temperature</th>
             <th>ECG</th>
+            <th>Add report </th>
           </tr>
         </thead>
         <tbody>
@@ -82,15 +93,18 @@ const Home = () => {
                   ""
         
         :
-        userDatas.map(userData=>{
+        userDatas.map((userData,idx)=>{
          return( <tr key={userData._id}>
+            <td>{idx+1}</td>
+            <td>{userData.uname}</td>
             <td>{userData.heartbeat}</td>
             <td>{userData.pulserate}</td>
             <td>{userData.oxygen}</td>
             <td>{userData.temperature}</td>
-            <td> <img src={userData.ecg} alt="ECG" width={100} height={100}/></td>
-            <td><button className='btn'>Download</button></td>
-            <td><button className='btn' onClick={()=>{handleShow(userData._id)}}>Upload Report</button></td>
+            <td> <img className='viewImg' src={userData.ecg} alt="ECG" width={100} height={100}  onClick={()=>{
+              setSelectedImg(userData.ecg)
+              setShowImg(true)}}/></td>
+            <td><BsFileEarmarkPlus className='mt-1 addreport' size={30} onClick={()=>{handleShow(userData._id)}}/></td>
           </tr>)
         })
         }
@@ -100,7 +114,7 @@ const Home = () => {
 
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>User Name: {selectedUser && selectedUser.heartbeat}</Modal.Title>
+          <Modal.Title>Add Report: {selectedUser && selectedUser.uname}</Modal.Title>
         </Modal.Header>
         <Modal.Body>  
                 <div className='row bg-warning p-3 rounded'>
@@ -132,7 +146,8 @@ const Home = () => {
                 </form>
                 :
                 <div className='d-flex justify-content-center mt-2'>
-                    <Uploader/>
+                    <Uploader image={image} setImage={setImage}
+                          fileName={fileName} setFileName={setFileName} />
                 </div>
       
                 }
@@ -146,6 +161,16 @@ const Home = () => {
                 Save Changes
               </button>
         </Modal.Footer>
+  </Modal>
+
+  <Modal  size="xl" show={showImg} onHide={handleCloseImg}>
+        <Modal.Header closeButton>
+        </Modal.Header>
+        <Modal.Body> 
+          <div  className='d-flex justify-content-center mt-2'> 
+          <img src={selectedImg && selectedImg} alt="preview"  />
+          </div>
+        </Modal.Body>
   </Modal>
   </div>
       </>

@@ -3,11 +3,11 @@ const UserData = require('../model/userDataModel')
 
 //create a user data 
 const createUserData=async(req,res)=>{
-  const {heartbeat, pulserate, oxygen, temperature, ecg}=req.body
+  const {uname, heartbeat, pulserate, oxygen, temperature, ecg}=req.body
 
   try {
     const user_id = req.user._id
-    const userData = await UserData.create({heartbeat, pulserate, oxygen, temperature, ecg ,user_id})
+    const userData = await UserData.create({uname, heartbeat, pulserate, oxygen, temperature, ecg ,user_id})
     res.status(200).json(userData)
 
   } catch (error) {

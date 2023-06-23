@@ -15,7 +15,7 @@ const NavBar = () => {
   }
 
     return ( <>
-        <Navbar collapseOnSelect expand="lg" className="navcolor" variant="light">
+        <Navbar collapseOnSelect expand="lg" className="navcolor bg-warning" variant="light">
         <Container>
           <Link to="/" className='navbar-brand'>BioSignal</Link>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
@@ -27,7 +27,7 @@ const NavBar = () => {
               </Nav.Link>
               <Link to="/about"  className='nav-link '>About us</Link>
               <Link to="/contact" className='nav-link'>Contact us</Link>
-              <Link to="/" className='nav-link'>  <button onClick={handleClick} className="btn logout">
+              <Link to="/" className='nav-link'>  <button onClick={handleClick} className="logout">
               Logout
             </button>
             </Link>
