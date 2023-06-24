@@ -84,6 +84,7 @@ const SignupUser = () => {
                   autoComplete="off"
                   value={age}
                   onChange={(e)=>{setAge(e.target.value)}}
+                  maxLength={3}
                   required
               />
               <Unicons.Uil18Plus className="input-icon2 uil uil-at"  />
@@ -113,6 +114,8 @@ const SignupUser = () => {
                   autoComplete="off"
                   value={phno}
                   onChange={(e)=>{setPhno(e.target.value)}}
+                  maxLength={10}
+                  max={9999999999}
                   required
                 />
                 <Unicons.UilMobileAndroid className="input-icon uil uil-at"  />

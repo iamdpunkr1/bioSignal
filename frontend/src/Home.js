@@ -16,9 +16,9 @@ const Home = () => {
     const [show, setShow] = useState(false)
     const [error, setError] = useState(false)
     const [showImg, setShowImg] = useState(false)
-    // const [feedImg,setFeedImg] = useState('')
+    const [isLoading,setLoading] = useState(true)
     const [activeTab, setActiveTab] = useState(0)
-
+    const [toggle,setToggle] = useState(false)
     const [image, setImage] =useState(null)
     const [fileName, setFileName]= useState("No file selected")
 
@@ -50,13 +50,14 @@ const Home = () => {
             setUserDatas(json)
             console.log("useeffect called admin ",json)
           }
+          setLoading(false)
         }
       
     
         if (user) {
           fetchUserDatas()
         }
-  },[user])
+  },[user,toggle])
 
 
   //upload Report
@@ -77,11 +78,16 @@ const Home = () => {
     }
     if(response.ok){
       console.log("upload successful",json)
+      setShow(false)
+      setToggle(!toggle)
     }
+
+    setLoading(false)
   }
 
   const handleSubmit=(e)=>{
     e.preventDefault()
+    setLoading(true)
     let report;
     if( feedback || image){
 
@@ -95,27 +101,36 @@ const Home = () => {
     }
     
     uploadFn(report)
-    console.log("Submit", image)
+    // console.log("Submit", image)
   }
 
     return ( <>
       <NavBar/>
-      <div className='App'>
+      <div className=''>
         
-      <h1>User datas</h1>
+      <h3 className='text-center my-5'>Patient Datas</h3>
       
-      <div className='container mt-5'>
-      <Table striped bordered hover size="sm">
+      { isLoading ?
+      
+        <div className='position-absolute bottom-50 end-50'>
+        <div className="spinner-grow" style={{width: "3rem", height: "3rem"}} role="status">
+          <span className="visually-hidden">Loading...</span>
+          </div>
+        </div>
+
+      :
+      <div className='container mt-2'>
+      <Table table-hover bordered hover size="sm">
         <thead>
           <tr>
-            <th>Sl</th>
-            <th>Name</th>
-            <th>Heart Beat</th>
-            <th>Pulse rate</th>
-            <th>Oxygen</th>
-            <th>Temperature</th>
-            <th>ECG</th>
-            <th>Add report </th>
+            <th className='text-center'>Sl</th>
+            <th className='text-center'>Name</th>
+            <th className='text-center'>Heart Beat</th>
+            <th className='text-center'>Pulse rate</th>
+            <th className='text-center'>Oxygen</th>
+            <th className='text-center'>Temperature</th>
+            <th className='text-center'>ECG</th>
+            <th className='text-center'>Add report </th>
           </tr>
         </thead>
         <tbody>
@@ -126,27 +141,37 @@ const Home = () => {
         :
         userDatas.map((userData,idx)=>{
          return( <tr key={userData._id}>
-            <td>{idx+1}</td>
-            <td>{userData.uname}</td>
-            <td>{userData.heartbeat}</td>
-            <td>{userData.pulserate}</td>
-            <td>{userData.oxygen}</td>
-            <td>{userData.temperature}</td>
-            <td> <img className='viewImg' src={userData.ecg} alt="ECG" width={100} height={100}  onClick={()=>{
+            <td className='text-center'>{idx+1}</td>
+            <td className='text-center'>{userData.uname}</td>
+            <td className='text-center'>{userData.heartbeat}</td>
+            <td className='text-center'>{userData.pulserate}</td>
+            <td className='text-center'>{userData.oxygen}</td>
+            <td className='text-center'>{userData.temperature}</td>
+            <td className='text-center'> <img className='viewImg' src={userData.ecg} alt="ECG" width={100} height={100}  onClick={()=>{
               setSelectedImg(userData.ecg)
               setShowImg(true)}}/></td>
-            <td><BsFileEarmarkPlus className='mt-1 addreport' size={30} onClick={()=>{handleShow(userData._id)}}/></td>
+            <td className='text-center'>
+              {
+              typeof(userData.report) === 'undefined' ?
+               <BsFileEarmarkPlus className='mt-1 addreport' size={30} onClick={()=>{handleShow(userData._id)}}/>
+               :
+                "Data uploaded"
+                }
+             
+            </td>
           </tr>)
         })
         }
         </tbody>
       </Table>
       </div>
+      }
+
 
       <Modal show={show} onHide={handleClose}>
       <form onSubmit={handleSubmit}>
         <Modal.Header closeButton>
-          <Modal.Title>Add Report: {selectedUser && selectedUser.uname}</Modal.Title>
+          <Modal.Title>Add Report:   <span class="h4 text-body-secondary"> {selectedUser && selectedUser.uname}</span></Modal.Title>
         </Modal.Header>
         <Modal.Body>  
                 <div className='row bg-warning p-3 rounded'>
